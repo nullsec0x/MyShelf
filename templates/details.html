@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ book['title'] }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Book Details</h1>
+
+<form method="POST">
+    <div class="mb-3 text-center">
+        {% if book['cover_url'] %}
+        <img src="{{ book['cover_url'] }}" alt="{{ book['title'] }} cover" class="img-fluid rounded mb-3" style="max-height: 200px;">
+        {% endif %}
+        <input type="url" class="form-control" id="cover_url" name="cover_url" value="{{ book['cover_url'] or '' }}" placeholder="Book cover URL">
+    </div>
+
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ book['title'] }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="author" class="form-label">Author</label>
+        <input type="text" class="form-control" id="author" name="author" value="{{ book['author'] }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="genre" class="form-label">Genre</label>
+        <input type="text" class="form-control" id="genre" name="genre" value="{{ book['genre'] }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="5">{{ book['description'] }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Book</button>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Back to List</a>
+</form>
+{% endblock %}
