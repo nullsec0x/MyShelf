@@ -42,7 +42,6 @@
     <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancel</a>
 </form>
 
-<!-- Search Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -81,7 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!query) return;
         
         fetch(`/search_books?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.error) {
                     searchResults.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
@@ -128,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById('description').value = this.dataset.description;
                         document.getElementById('cover_url').value = this.dataset.coverUrl;
                         searchModal.hide();
+                        document.body.classList.remove('modal-open');
+                        document.querySelector('.modal-backdrop').remove();
                     });
                 });
             })
